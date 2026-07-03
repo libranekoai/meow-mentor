@@ -68,7 +68,7 @@ We explicitly **disable Gemini's Automatic Function Calling** (`automatic_functi
    ```bash
    python -m venv .venv
    .venv\Scripts\activate   # Windows
-   pip install streamlit google-genai pillow
+   pip install -r requirements.txt
    ```
 
 3. **Add your Gemini API key**
