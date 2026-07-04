@@ -55,17 +55,17 @@ system_instruction = (
 # 6. SIDEBAR & PILIHAN BAHASA
 with str.sidebar:
     str.title("🐾 Meow-Mentor Settings")
-    lang_choice = str.radio("Select Language / Pilih Bahasa:", ("Malay", "English"))
+    lang_choice = str.radio("Select Language / Pilih Bahasa:", ("Bahasa Melayu", "English"))
     
     str.divider()
-    if str.button("Clear Chat / Padam Sembang"):
+    if str.button("Clear Chat / Padam mesej"):
         str.session_state.messages = []
         str.session_state.trigger_prompt = None
         str.rerun()
 
 # 7. PENYEDIAAN MICROCOPY (DWI-BAHASA)
 if lang_choice == "English":
-    title_text = "🐾 Meow-Mentor (Agentic)"
+    title_text = "🐾 MEOW MENTOR"
     subtitle_text = "Your AI Agent guide to rescuing stray cats. Intelligent, responsive, and action-ready!"
     text_label = "What is the cat's current situation?"
     text_upload = "📸 Upload a photo of the cat (Optional):"
@@ -80,15 +80,15 @@ if lang_choice == "English":
         "Cat looks sick and lethargic"
     ]
 else:
-    title_text = "🐾 Meow-Mentor (Agentic)"
-    subtitle_text = "Agen AI bimbingan kecemasan anda untuk selamatkan kucing jalanan. Bijak, tangkas, dan sedia bertindak!"
-    text_label = "Apa situasi kucing itu sekarang?"
+    title_text = "🐾 MEOW MENTOR"
+    subtitle_text = "Agen AI bimbingan anda untuk menyelamatkan kucing jalanan. Bijak, responsif, dan sedia membantu!"
+    text_label = "Apakah situasi kucing itu sekarang?"
     text_upload = "📸 Muat naik gambar kucing (Jika perlu):"
     text_btn_label = "🚨 Sahkan Situasi"
-    text_placeholder = "Tanya Meow-Mentor, beritahu lokasi, atau aduan sakit..."
-    text_typing = "Ejen Meow-Mentor sedang menganalisis..."
+    text_placeholder = "Tanya Meow-Mentor apa sahaja berkaitan seperti lokasi atau keadaan kucing"
+    text_typing = "Agen Meow-Mentor sedang menganalisis..."
     options_cat = [
-        "-- Pilih situasi pantas --",
+        "-- Pilihan situasi segera--",
         "Jumpa anak kucing baru lahir ditinggalkan",
         "Kucing cedera atau berdarah",
         "Kucing tersekat dan ketakutan",
@@ -115,12 +115,12 @@ if uploaded_file:
 
     # Bagi button khas untuk analyze gambar SAHAJA (kalau user tak taip apa-apa)
     if file_id != str.session_state.last_processed_file:
-        analyze_label = "🔍 Analyze Photo" if lang_choice == "English" else "🔍 Analisa Gambar Ni"
+        analyze_label = "🔍 Analyze Photo" if lang_choice == "English" else "🔍 Analisa Gambar Ini"
         if str.button(analyze_label):
             if lang_choice == "English":
                 str.session_state.trigger_prompt = "I uploaded a photo of a cat. Please analyze it and guide me."
             else:
-                str.session_state.trigger_prompt = "Saya upload gambar kucing. Tolong analisa dan bimbing saya."
+                str.session_state.trigger_prompt = "Saya muat naik gambar kucing tersebut. Tolong analisa situasi ini dan bimbing saya."
             str.session_state.last_processed_file = file_id
 
 if selected_situation and selected_situation != options_cat[0]:
@@ -231,7 +231,7 @@ if final_query:
                     if lang_choice == "English":
                         str.markdown(f"**Here's what I recommend:**\n\n{response.text}")
                     else:
-                        str.markdown(f"**Ini apa yang saya cadangkan:**\n\n{response.text}")
+                        str.markdown(f"**Ini cadangan saya:**\n\n{response.text}")
                     
                     str.session_state.messages.append({"role": "assistant", "text": response.text})
                     str.session_state.last_processed_file = file_id if uploaded_file else None 
