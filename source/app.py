@@ -10,7 +10,7 @@ except Exception:
     client = None
 
 # 2. SETUP KONFIGURASI HALAMAN
-st.set_page_config(page_title="Meow Mentor", page_icon="🐾", layout="centered")
+st.set_page_config(page_title="Meow Mentor | Your AI Agent to Rescuing Stray Cats", page_icon="🐾", layout="centered")
 
 # 3. SETUP MEMORI SEMBANG
 if "messages" not in st.session_state:
@@ -154,11 +154,13 @@ div[data-baseweb="select"] {
     margin: 0;
     letter-spacing: -0.5px;
     line-height: 1.1;
+    text-align: center;
 }
 .hero-subtitle {
     color: #8A7A72;
     font-size: 1.15rem; /* Besarkan dari 0.98rem */
     margin-top: 6px;
+    text-align: center;
 }
 
 .urgency-badge {
@@ -304,7 +306,7 @@ else:
 
 # PAPARAN UTAMA ANTARAMUKA
 st.markdown(
-    f'<div class="hero-wrap">{CAT_HERO_SVG}'
+    f'<div class="hero-wrap" style="justify-content: center;">{CAT_HERO_SVG}'
     f'<div><p class="hero-title">{title_text}</p>'
     f'<p class="hero-subtitle">{subtitle_text}</p></div></div>',
     unsafe_allow_html=True
