@@ -1,4 +1,4 @@
-# 🐾 Meow-Mentor (Agentic)
+# 🐾 Meow-Mentor
 
 An AI-powered rescue mentor that guides everyday people through stray cat emergencies — step by step, in real time, in their own language.
 
@@ -81,7 +81,7 @@ We explicitly **disable Gemini's Automatic Function Calling** (`automatic_functi
 
 4. **Run the app**
    ```bash
-   streamlit run app.py
+   streamlit run source/app.py
    ```
 
 5. Open the local URL Streamlit gives you (usually `http://localhost:8501`).
