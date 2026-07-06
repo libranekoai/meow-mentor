@@ -198,6 +198,13 @@ div[data-baseweb="select"] {
     border-top: 2px solid #FFE0CC;
     margin: 0;
 }
+            /* Responsive untuk Skrin Telefon */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem !important; /* Kecilkan sikit font tajuk */
+        line-height: 1.1;
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -306,7 +313,7 @@ else:
 
 # PAPARAN UTAMA ANTARAMUKA
 st.markdown(
-    f'<div class="hero-wrap" style="justify-content: center;">{CAT_HERO_SVG}'
+   f'<div class="hero-wrap" style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px;">{CAT_HERO_SVG}'
     f'<div><p class="hero-title">{title_text}</p>'
     f'<p class="hero-subtitle">{subtitle_text}</p></div></div>',
     unsafe_allow_html=True
