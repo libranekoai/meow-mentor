@@ -212,6 +212,20 @@ div[data-baseweb="select"] {
 </style>
 """, unsafe_allow_html=True)
 
+# Semak kalau chat masih kosong
+is_chat_empty = len(st.session_state.messages) == 0
+
+# Kalau kosong, kita kunci scroll (overflow: hidden)
+if is_chat_empty:
+    st.markdown("""
+        <style>
+            /* Kunci scroll untuk keseluruhan badan web */
+            body, .stApp {
+                overflow: hidden !important;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
 # 4. DEFINISI TOOLS (Fungsi Sebenar Python Untuk Agen)
 def cari_shelter_berdekatan(lokasi: str, bahasa: str = "Malay") -> str:
     """Mencari senarai shelter kucing berdekatan berdasarkan lokasi yang diberikan."""
