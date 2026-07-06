@@ -12,6 +12,10 @@ except Exception:
 # 2. SETUP KONFIGURASI HALAMAN
 st.set_page_config(page_title="Meow Mentor | Your AI Agent to Rescuing Stray Cats", page_icon="🐾", layout="centered")
 
+def reset_chat():
+    st.session_state.messages = []
+    st.session_state.trigger_prompt = None
+
 # 3. SETUP MEMORI SEMBANG
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -249,7 +253,11 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.write("")
-    lang_choice = st.radio("Select Language / Pilih Bahasa:", ("English", "Bahasa Melayu"))
+    lang_choice = st.radio(
+        "Select Language / Pilih Bahasa:",
+        ("English", "Bahasa Melayu"),
+        on_change=reset_chat
+    )
 
     st.divider()
     if st.button("🗑️ Clear Chat / Padam Mesej"):
