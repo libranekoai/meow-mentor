@@ -86,13 +86,21 @@ We explicitly **disable Gemini's Automatic Function Calling** (`automatic_functi
 
 5. Open the local URL Streamlit gives you (usually `http://localhost:8501`).
 
+## ⚠️ Important Note: API Rate Limit
+
+This project runs on the **Google Gemini API free tier**, which caps requests at **20 per day** for the `gemini-2.5-flash` model.
+
+If you encounter a `429 RESOURCE_EXHAUSTED` error while testing the live demo, this means the daily quota has been reached — it is not an application bug. The app's error handling catches this gracefully and displays a readable message rather than crashing. Quota resets on a rolling 24-hour basis; you can also monitor usage at [ai.google.dev/gemini-api/docs/rate-limits](https://ai.google.dev/gemini-api/docs/rate-limits).
+
+For a production deployment, this would be resolved by upgrading to a paid Gemini API tier to support concurrent users.
+
 ## Security Considerations
 
 - **API key handling:** The Gemini API key is never hardcoded. It's loaded via `st.secrets`, and `.streamlit/secrets.toml` is git-ignored so it's never committed to version control.
 - **`.gitignore` coverage:** Virtual environment (`.venv/`), Python cache files, and secrets are all excluded from the repository.
 - **Error handling:** API failures (e.g. rate limits, connectivity issues) are caught and shown as a user-facing message rather than raw stack traces, though the underlying exception is still logged in the message for debugging during development.
 - **No user data persistence:** Chat history and uploaded images exist only in the Streamlit session state — nothing is written to disk or an external database, so no personal data outlives the session.
-- **Known limitation:** As this is a hackathon prototype, there is no rate-limiting or abuse protection on the API key itself. In a production version, this would need request throttling and/or a backend proxy to protect the key from being drained by excessive use.
+- **Known limitation:** As this is a hackathon prototype, there is no rate-limiting or abuse protection on the API key itself, and the free-tier quota (20 requests/day) can be exhausted quickly during testing/demos — see the note above. In a production version, this would need request throttling, a backend proxy, and a paid API tier to protect the key and support real usage volume.
 
 ## Edge Cases Handled
 
