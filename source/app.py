@@ -407,12 +407,13 @@ st.markdown(
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         text = message["text"]
-        if message["role"] == "assistant" and ("KRITIKAL" in text or "CRITICAL" in text):
+        urgency = message.get("urgency")  # mesej lama (sebelum fix) takde key ni, so default None
+        if message["role"] == "assistant" and urgency == "critical":
             st.markdown(
                 f'<div class="urgency-badge badge-critical">{CAT_CRITICAL_SVG}<span>{label_critical}</span></div>',
                 unsafe_allow_html=True
             )
-        elif message["role"] == "assistant" and ("STABIL" in text or "STABLE" in text):
+        elif message["role"] == "assistant" and urgency == "stable":
             st.markdown(
                 f'<div class="urgency-badge badge-stable">{CAT_STABLE_SVG}<span>{label_stable}</span></div>',
                 unsafe_allow_html=True
@@ -473,6 +474,8 @@ if final_query:
                         config=config
                     )
 
+                    detected_urgency = None  # "critical" / "stable" / None — ambil terus dari tool, bukan dari jawapan akhir Gemini
+
                     if response.function_calls:
                         formatted_contents.append(response.candidates[0].content)
 
@@ -487,6 +490,12 @@ if final_query:
                                     tool_result = cari_shelter_berdekatan(**args)
                                 elif name == "nilai_tahap_urgensi":
                                     tool_result = nilai_tahap_urgensi(**args)
+                                    # Tentukan badge terus dari output tool (string yang kita kawal),
+                                    # sebab jawapan akhir Gemini nanti hanya parafrasa & huruf kecil.
+                                    if "KRITIKAL" in tool_result or "CRITICAL" in tool_result:
+                                        detected_urgency = "critical"
+                                    elif "STABIL" in tool_result or "STABLE" in tool_result:
+                                        detected_urgency = "stable"
                                 else:
                                     tool_result = "Function not found."
                             except Exception as e:
@@ -506,12 +515,12 @@ if final_query:
 
                     result_text = response.text
 
-                    if "KRITIKAL" in result_text or "CRITICAL" in result_text:
+                    if detected_urgency == "critical":
                         st.markdown(
                             f'<div class="urgency-badge badge-critical">{CAT_CRITICAL_SVG}<span>{label_critical}</span></div>',
                             unsafe_allow_html=True
                         )
-                    elif "STABIL" in result_text or "STABLE" in result_text:
+                    elif detected_urgency == "stable":
                         st.markdown(
                             f'<div class="urgency-badge badge-stable">{CAT_STABLE_SVG}<span>{label_stable}</span></div>',
                             unsafe_allow_html=True
@@ -522,7 +531,11 @@ if final_query:
                     else:
                         st.markdown(f"**Ini cadangan saya:**\n\n{result_text}")
 
-                    st.session_state.messages.append({"role": "assistant", "text": result_text})
+                    st.session_state.messages.append({
+                        "role": "assistant",
+                        "text": result_text,
+                        "urgency": detected_urgency
+                    })
                     st.session_state.last_processed_file = file_id if uploaded_file else None
 
         except Exception as e:
